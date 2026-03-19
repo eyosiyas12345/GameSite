@@ -1,0 +1,101 @@
+// selection
+const body = document.querySelector("body");
+const canva = document.getElementById('canva');
+const ctx = canva.getContext('2d');
+const score = document.querySelector("#score");
+const resetBtn = document.querySelector("#resetBtn")
+const canvaWidth = canva.clientWidth;
+const canvaHeight = canva.clientHeight;
+const snakeColor = 'lightgreen';
+const foodColor = 'red';
+const scale = 20;
+const canvaRow = canvaWidth/scale;
+const canvaColumn = canvaHeight/scale;
+let gameOver = false;
+
+// css Styles
+body.style.backgroundImage = 'url("bg.jpg")';
+body.style.textAlign = 'center';
+body.style.margin = '10px';
+body.height = '100vh';
+canva.style.backgroundColor = 'black';
+
+score.style.fontSize = '30px';
+resetBtn.style.padding = '10px 20px';
+resetBtn.style.cursor = 'pointer';
+
+// Program
+let snake = [{
+  x: Math.floor(Math.random()*canvaRow)*scale,
+  y: Math.floor(Math.random()*canvaColumn)*scale
+}];
+
+let food = {
+  x: Math.floor(Math.random()*canvaRow)*scale,
+  y: Math.floor(Math.random()*canvaColumn)*scale
+};
+
+let d ='right';
+let playGame = setInterval(drawSnake, 200);
+body.addEventListener("keydown", changeDirection);
+
+// functions
+function drawSnake(){
+  ctx.clearRect(0,0,canvaWidth,canvaHeight);
+for (let i = 0; i<snake.length; i++){
+    ctx.fillStyle = snakeColor;
+    ctx.strokeStyle = 'red';
+    ctx.fillRect(snake[i].x,snake[i].y, scale, scale);
+    ctx.strokeRect(snake[i].x,snake[i].y, scale, scale);
+
+
+    if(snake[i].x === canvaWidth) snake[i].x = 0;
+    else if(snake[i].x === 0) snake[i].x = canvaWidth;
+    else if(snake[i].y === canvaHeight) snake[i].y = 0;
+    else if(snake[i].y === 0) snake[0].y = canvaHeight;
+}
+    ctx.fillStyle = foodColor;
+    ctx.fillRect(food.x, food.y, scale, scale);
+
+let snakeX = snake[0].x;
+let snakeY = snake[0].y;
+
+    if (d == 'right')  snakeX +=scale;
+    if (d == 'left') snakeX -=scale;
+    if (d == 'down')  snakeY +=scale;
+    if (d == 'up') snakeY -=scale;
+
+  let newHead = {
+    x: snakeX,
+    y: snakeY
+  }
+  snake.pop();
+  snake.unshift(newHead);
+
+
+  if(snake[0].x === food.x && snake[0].y === food.y){
+score.innerHTML = parseInt(score.innerHTML) + 1;
+food.x = Math.floor(Math.random()*canvaRow)*scale;
+food.y = Math.floor(Math.random()*canvaColumn)*scale;
+  snake.unshift(newHead);
+  }
+}
+
+function changeDirection(event){
+  for(let i=0; i<snake.length; i++){
+  if(event.key === 'ArrowDown' && d != 'up') d= 'down';
+  if(event.key === 'ArrowUp'&& d != 'down') d= 'up';
+  if(event.key === 'ArrowLeft' && d!='right') d= 'left';
+  if(event.key === 'ArrowRight' && d!='left') d= 'right';
+}
+}
+
+
+
+resetBtn.addEventListener("click", function(){
+  score.innerHTML = 0;
+  snake = [{
+    x: Math.floor(Math.random()*canvaRow)*scale,
+    y: Math.floor(Math.random()*canvaColumn)*scale
+  }]
+});

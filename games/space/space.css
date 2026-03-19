@@ -1,0 +1,20 @@
+body{
+font-family:'Courier New', Courier, monospace;
+text-align: center;
+background-image: url("./images/onplanet.jpg");
+background-size:cover;
+
+}
+#board{
+  background:transparent;
+}
+h1{
+  font-size: 32px;
+  font-weight:700;
+  color:rgb(124, 116, 116);
+ text-transform : uppercase;
+ /* background: url('Images/back-ground.jpg');
+ background-size: cover;
+ -webkit-text-fill-color: transparent;
+ -webkit-background-clip: text; */
+}
