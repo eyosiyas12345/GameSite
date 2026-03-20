@@ -16,13 +16,16 @@ let gameOver = false;
 // css Styles
 body.style.backgroundImage = 'url("bg.jpg")';
 body.style.textAlign = 'center';
-body.style.margin = '10px';
 body.height = '100vh';
+body.style.maxWidth = '100%';
+canva.style.maxWidth = '100%';
+canva.style.maxHeight = '100%';
 canva.style.backgroundColor = 'black';
 
 score.style.fontSize = '30px';
 resetBtn.style.padding = '10px 20px';
 resetBtn.style.cursor = 'pointer';
+
 
 // Program
 let snake = [{
@@ -49,11 +52,13 @@ for (let i = 0; i<snake.length; i++){
     ctx.strokeRect(snake[i].x,snake[i].y, scale, scale);
 
 
-    if(snake[i].x === canvaWidth) snake[i].x = 0;
-    else if(snake[i].x === 0) snake[i].x = canvaWidth;
-    else if(snake[i].y === canvaHeight) snake[i].y = 0;
-    else if(snake[i].y === 0) snake[0].y = canvaHeight;
+    if(snake[i].x >canvaWidth) snake[i].x = 0;
+    else if(snake[i].x < 0) snake[i].x = canvaWidth;
+    else if(snake[i].y >canvaHeight) snake[i].y = 0;
+    else if(snake[i].y < 0) snake[0].y = canvaHeight;
+
 }
+
     ctx.fillStyle = foodColor;
     ctx.fillRect(food.x, food.y, scale, scale);
 
