@@ -1,16 +1,14 @@
-*{
+*{           
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 header, footer{
   background-color: #72727266;
   position: sticky;
   color: #88b54f;
   font-weight: bold;
   /* font-size: 2rem; */
-  font-family: sans-serif;
   /* width: 100%; */
   display: flex;
   justify-content: space-between;
@@ -31,20 +29,31 @@ ul li a{
   text-decoration: none;
   color: rgb(235, 254, 226);
   transition: transform 0.4s ease-in-out;
+  font-weight: bold;
 }
 ul:nth-last-of-type(1){
-  width: 60%;
+  width: 50%;
 }
 ul li a:hover{
   color:#618631;
 }
 ul li a:active{
-  color: rgb(0, 25, 0);
+  color: #618631;
+}
+ul li a.active{
+ color: #618631;
+ cursor: default;
 }
 #humberger{
   display: none;
 }
 
-@media (max-width: 750){
-  
+@media only screen and(max-width : 750px){
+  .links{
+    display: none;
+  }
+  #humberger{
+    display: block;
+  }
+   
 }

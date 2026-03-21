@@ -55,14 +55,14 @@ else{
   score['You Lose']++;
 }
 
-// if(score['You Win']===5){
-//   alert('You Win the Game');
-//   reset_score();
-// }
-// else if(score['You Lose']===5){
-//   alert('You Lose the Game');
-//   reset_score();
-// }
+if(score['You Win']===5){
+  alert('You Win the Game');
+  reset_score();
+}
+else if(score['You Lose']===5){
+  alert('You Lose the Game');
+  reset_score();
+}
 displayMoves(playerMove,computerMove);
 updateScore();
 

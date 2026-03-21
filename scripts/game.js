@@ -46,3 +46,17 @@ function render (data){
     //   </div>
 //  <a href="${item.link}"></a>
 render(gameCards);
+
+// active page link accessing 
+document.addEventListener('DOMContentLoaded' ,() =>{
+   const currentPathName = window.location.pathname.split('/').pop()|| 'index.html';
+   const navLinks = document.querySelectorAll("header a");
+   navLinks.forEach(link => {
+    const linkPathName = link.getAttribute('href').split('/').pop();
+
+    if(linkPathName === currentPathName ){
+        link.classList.add('active');
+        
+    }
+   });
+});
