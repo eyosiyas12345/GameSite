@@ -13,9 +13,13 @@ fetch('/components/header.html').then(response =>{
     let headerDom = parser.parseFromString(headerString, 'text/html');
     const navLinks = headerDom.querySelectorAll('.nav-link');
     const currentPathName = window.location.pathname.split('/').pop();
+    console.log("succeed");
+    console.log(navLinks);
+    console.log(currentPathName);
     
     navLinks.forEach(link =>{
         const linkPathName = link.getAttribute('href').split('/').pop(); //snake.html
+        console.log(linkPathName);
         if(linkPathName === currentPathName){
             link.classList.add('active');
             console.log("succeed");

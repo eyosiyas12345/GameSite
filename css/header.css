@@ -7,9 +7,9 @@ header{
   background-color: #72727266;
   position: sticky;
   font-weight: bold;
+  font-size: 1.5rem;
   /* font-size: 2rem; */
   /* width: 100%; */
-  color: rgb(235, 254, 226);
   display: flex;
   justify-content: space-between;
   align-items:center;
@@ -33,6 +33,7 @@ ul:nth-last-of-type(1){
   text-decoration: none;
   transition: transform 0.4s ease-in-out;
   font-weight: bold;
+  color: rgb(235, 254, 226);
 }
 .nav-link:hover{
   color:#618631;

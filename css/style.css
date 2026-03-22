@@ -114,6 +114,7 @@ img{
   /* //bootstrap */
 #text-type{
   color: #618631;
+  --webkit-stroke: grey;
   text-align: center;
   font-weight: bold;
   font-size: 2rem;
