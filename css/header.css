@@ -7,14 +7,14 @@ header{
   background-color: #72727266;
   position: sticky;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   /* font-size: 2rem; */
   /* width: 100%; */
   display: flex;
   justify-content: space-between;
   align-items:center;
   padding: 10px ;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 header ul{
   display: flex;
@@ -47,14 +47,23 @@ ul li a.active{
 } 
 #humberger{
   display: none;
+  cursor: pointer;
 }
 
-@media only screen and(max-width : 750px){
+@media only screen and (max-width : 768px){
   .links{
     display: none;
   }
   #humberger{
     display: block;
   }
-   
+  .nav-links{
+    position: fixed;
+    right: -100%;
+    top: 60%;
+    background: orange;
+    transition: 0.3s ease-in-out;
+    flex-direction: column;
+  }
+  .nav-links.active{right: 0;}
 }
