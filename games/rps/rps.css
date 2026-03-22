@@ -1,34 +1,44 @@
 body{
+  min-height: 100vh;
  background-color:rgb(25,25,25);
  color:white;
- margin-bottom:1000px;
- text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ margin: 0;
+ padding: 1rem;
 }
 .container{
+width: min(100%, 460px);
 display:flex;
 flex-direction:column;
 align-items:center;
-justify-content:center;
+  gap: 1.25rem;
+  padding: 1rem;
+  box-shadow: 0 0 18px rgba(0,0,0,.45);
+  border-radius: 14px;
+  background: rgba(0,0,0,.35);
 }
 .game-title{
-  font-size:30px;
-  font-weight:bold;
+font-size: clamp(1.3rem, 3vw, 2rem);
 }
-.emoji{
-  height:50px;
-  background-color:transparent;
+.emoji {
+  width: 42px;
+  height: 42px;
 }
-.emoji-button{
-  background-color:transparent;
-  border: 3px solid white;
-  border-radius:50%;
-  padding:30px 30px;
-  margin-left: 10px;
-  cursor:pointer;
+.emoji-button {
+  border: 3px solid #fff;
+  border-radius: 50%;
+  padding: 1rem;
+  margin: 0 .35rem;
+  min-width: 5rem;
+  min-height: 5rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 .result{
   margin-top:50px;
-  font-size:22px;
   font-weight:bold;
   margin-bottom:50px;
   text-align: center;
@@ -36,10 +46,23 @@ justify-content:center;
 .moves{
   margin-bottom:50px;
 }
+.result, .moves, .js-score {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+}
 .reset-button,
 .auto-button{
   padding: 10px 20px;
   border-radius:none;
   font-size:15px;
   cursor:pointer;
+}
+/* tablet/mobile */
+@media (max-width: 768px) {
+  .emoji-button {
+    padding: .8rem;
+    min-width: 4.2rem;
+    min-height: 4.2rem;
+    margin: 0 .2rem;
+  }
+  .emoji { width: 32px; height: 32px; }
 }

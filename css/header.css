@@ -57,6 +57,11 @@ ul li a.active{
   #humberger{
     display: block;
   }
+  .line{
+    width: 25px;
+    height: 3px;
+    background-color: grey;
+  }
   .nav-links{
     position: fixed;
     right: -100%;

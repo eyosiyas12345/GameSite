@@ -9,7 +9,7 @@ fetch('/components/header.html').then(response =>{
 
     // active page link accessing & showing current page
     const navLinks = headerContainer.querySelectorAll('.nav-link');
-    const currentPathName = window.location.pathname.split('/').pop();
+    let currentPathName = window.location.pathname.split('/').pop();
     if(!currentPathName) currentPathName = 'index.html';
     console.log("succeed");
     console.log(navLinks);
