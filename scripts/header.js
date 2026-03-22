@@ -1,11 +1,25 @@
 
-//header section
-fetch('/components/header.html')
-.then(response =>{
+//Add a header to all sections.
+fetch('/components/header.html').then(response =>{
  if(!response.ok){
   throw new Error ("Header file is not found");
  }
   return response.text()
-} ).then(data => {
-    document.getElementById("header").innerHTML = data;
+} ).then(headerString => {
+    document.getElementById("header").innerHTML = headerString;
+
+    // active page link accessing 
+    let parser = new DOMParser();
+    let headerDom = parser.parseFromString(headerString, 'text/html');
+    const navLinks = headerDom.querySelectorAll('.nav-link');
+    const currentPathName = window.location.pathname.split('/').pop();
+    
+    navLinks.forEach(link =>{
+        const linkPathName = link.getAttribute('href').split('/').pop(); //snake.html
+        if(linkPathName === currentPathName){
+            link.classList.add('active');
+            console.log("succeed");
+        }
+    })
+
 }).catch(error => console.log('The Error:', error));

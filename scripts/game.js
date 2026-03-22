@@ -16,7 +16,7 @@ function typeWriter(){
 typeWriter();
 //
 function render (data){
- console.log("to render a page");
+ console.log("to render a card");
  let container = document.querySelector(".cards-container");
  data.forEach((item)=>{
   const card = `
@@ -47,16 +47,4 @@ function render (data){
 //  <a href="${item.link}"></a>
 render(gameCards);
 
-// active page link accessing 
-document.addEventListener('DOMContentLoaded' ,() =>{
-   const currentPathName = window.location.pathname.split('/').pop()|| 'index.html';
-   const navLinks = document.querySelectorAll("header a");
-   navLinks.forEach(link => {
-    const linkPathName = link.getAttribute('href').split('/').pop();
 
-    if(linkPathName === currentPathName ){
-        link.classList.add('active');
-        
-    }
-   });
-});
