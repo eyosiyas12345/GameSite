@@ -1,24 +1,52 @@
-body{
-text-align: center;
-background-image: url("./images/onplanet.jpg");
-background-size:cover;
-height: 100vh;
-width: 100%;
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-image: url("./images/onplanet.jpg");
+  background-size: cover;
+  color: white;
+  text-align: center;
+  padding: 1rem;
 }
-#board{
-  background:transparent;
+h1 { margin: .5rem 0; }
+
+.game-area {
+  width: min(100%, 560px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .75rem;
 }
-canvas{
-  max-width: 100%;
+
+#board {
+  width: min(95vw, 512px);
+  height: min(95vw, 512px);
+  max-width: 512px;
+  max-height: 512px;
+  background: black;
+  border: 2px solid #ccc;
+  touch-action: none;
 }
-h1{
-  font-size: 32px;
-  font-weight:700;
-  color:rgb(124, 116, 116);
- text-transform : uppercase;
- text-align: center;
- /* background: url('Images/back-ground.jpg');
- background-size: cover;
- -webkit-text-fill-color: transparent;
- -webkit-background-clip: text; */
+
+.touch-controls {
+  display: none;
+  gap: .5rem;
+}
+.touch-btn {
+  min-width: 3.5rem;
+  min-height: 3.5rem;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  background: rgba(0,0,0,.5);
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+@media (max-width: 768px) {
+  body { justify-content: center; }
+  .touch-controls { display: flex; }
+  #board { width: min(90vw, 420px); height: min(90vw, 420px); }
 }

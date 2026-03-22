@@ -104,3 +104,15 @@ resetBtn.addEventListener("click", function(){
     y: Math.floor(Math.random()*canvaColumn)*scale
   }]
 });
+
+// mobile play js
+const controls = document.querySelectorAll('.ctrl-btn');
+controls.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const dir = btn.dataset.dir;
+    if (dir === 'up' && d !== 'down') d = 'up';
+    if (dir === 'down' && d !== 'up') d = 'down';
+    if (dir === 'left' && d !== 'right') d = 'left';
+    if (dir === 'right' && d !== 'left') d = 'right';
+  });
+});

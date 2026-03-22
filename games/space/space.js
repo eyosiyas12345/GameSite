@@ -199,3 +199,64 @@ function detectCollision(a,b){
          a.y<b.y+b.height&&
          a.y+a.height>b.y
 }
+
+
+///For Mobile and Tablets
+// existing code...
+
+function resizeBoard() {
+  const max = Math.min(window.innerWidth * 0.9, 512);
+  const size = Math.round(max / tileSize) * tileSize;
+  board.style.width = `${size}px`;
+  board.style.height = `${size}px`;
+}
+window.addEventListener('resize', resizeBoard);
+
+// in window.onload:
+window.onload = function () {
+  board = document.getElementById("board");
+  resizeBoard();                // keep on-screen responsive
+  board.width = boardWidth;
+  board.height = boardHeight;
+  context = board.getContext("2d");
+  // existing init...
+  requestAnimationFrame(update);
+  document.addEventListener("keydown", moveShip);
+  document.addEventListener("keyup", shoot);
+
+  // touch controls
+  document.querySelectorAll('.touch-btn').forEach(btn => {
+    btn.addEventListener('touchstart', e => {
+      e.preventDefault();
+      const action = btn.dataset.action;
+      if (action === 'left') shipX = Math.max(0, shipX - shipVelocityX);
+      if (action === 'right') shipX = Math.min(boardWidth - ship.width, shipX + shipVelocityX);
+      if (action === 'shoot') doShoot();
+    });
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const action = btn.dataset.action;
+      if (action === 'left') shipX = Math.max(0, shipX - shipVelocityX);
+      if (action === 'right') shipX = Math.min(boardWidth - ship.width, shipX + shipVelocityX);
+      if (action === 'shoot') doShoot();
+    });
+  });
+};
+
+function doShoot() {
+  if (gameover) return;
+  let bullet = {
+    x: ship.x + ship.width / 2 - tileSize / 16,
+    y: ship.y,
+    width: tileSize / 8,
+    height: tileSize / 2,
+    used: false
+  };
+  bulletsArray.push(bullet);
+}
+
+// replace `shoot` function body with:
+function shoot(e) {
+  if (gameover) return;
+  if (e.code === "Space") doShoot();
+}
