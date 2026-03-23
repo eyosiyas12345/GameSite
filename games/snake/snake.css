@@ -1,26 +1,28 @@
 body {
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
   min-height: 100vh;
   margin: 0;
-  padding: 1rem;
-  background-color: #191919;
+  /* padding: 1rem; */
+  /* background-color: #191919; */
 }
 
 .game-area {
   width: min(100%, 460px);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 1rem;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
 #canva {
-  width: min(90vw, 400px);
-  height: min(90vw, 400px);
-  max-width: 400px;
-  max-height: 400px;
   background: black;
   border: 2px solid #ccc;
 }
@@ -59,10 +61,10 @@ body {
 @media (max-width: 768px) {
   .game-area {
     width: min(100%, 360px);
+    margin-top: 3rem;
   }
   #canva {
-    width: min(90vw, 320px);
-    height: min(90vw, 320px);
+    /* width and height set dynamically in JS */
   }
   .mobile-controls {
     display: flex;

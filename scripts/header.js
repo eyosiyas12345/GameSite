@@ -33,4 +33,19 @@ fetch('/components/header.html').then(response =>{
             navLinksContainer.classList.toggle('active');
         });
     }
+    // close button
+    const closeBtn = navLinksContainer.querySelector('.close-btn');
+    if(closeBtn){
+        closeBtn.addEventListener("click",()=>{
+            humberger.classList.remove('active');
+            navLinksContainer.classList.remove('active');
+        });
+    }
+    // close on outside click
+    navLinksContainer.addEventListener("click",(e)=>{
+        if(e.target === navLinksContainer || e.target.classList.contains('nav-links')){
+            humberger.classList.remove('active');
+            navLinksContainer.classList.remove('active');
+        }
+    });
 }).catch(error => console.log('The Error:', error));

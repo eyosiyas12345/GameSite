@@ -43,38 +43,74 @@ let alienVelocityX = 1;
 let bulletsArray = [];
 let bulletVelocityY = -10; //speed of the bullet     negative because the movement is up.
 
+let alienBulletsArray = [];
+let alienBulletVelocityY = 0.5; // slower
+
 let score =0;
 let gameover =false;
+
+let restartBtn;
 
 
 window.onload = function (){
   board = document.getElementById("board");
+  resizeBoard();
   board.width = boardWidth;
   board.height = boardHeight;
   context = board.getContext("2d"); //used for drawing on the board;
 
-  //draw the ship
-  // context.fillStyle = "green";
-  // context.fillRect(shipX,shipY,shipWidth,shipHeight);
+  // ensure transparent canvas and no border
+  board.style.background = "transparent";
+  board.style.border = "none";
+
+  restartBtn = document.getElementById("restartBtn");
+  restartBtn.addEventListener("click", resetGame);
 
   //load the ship
   shipImg = new Image();
-  shipImg.src = "./Images/ship.png";
+  shipImg.src = "./images/ship.png";
 
   //load the aliens
   alienImg = new Image();
-  alienImg.src = "./Images/white-alien.png";
+  alienImg.src = "./images/white-alien.png";
+
   //create aliens
   createAliens();
-  
-  shipImg.onload = function (){
-    context.drawImage(shipImg,shipX,shipY,shipWidth,shipHeight);
-  }
 
   requestAnimationFrame(update);
   document.addEventListener("keydown",moveShip);
-  document.addEventListener("keyup",shoot);
-}
+  document.addEventListener("keyup", shoot);
+
+  // touch controls
+  document.querySelectorAll('.touch-btn').forEach(btn => {
+    btn.addEventListener('touchstart', e => {
+      e.preventDefault();
+      const action = btn.dataset.action;
+      if (action === 'left') {
+        shipX = Math.max(0, shipX - shipVelocityX);
+        ship.x = shipX;
+      }
+      if (action === 'right') {
+        shipX = Math.min(boardWidth - ship.width, shipX + shipVelocityX);
+        ship.x = shipX;
+      }
+      if (action === 'shoot') doShoot();
+    });
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const action = btn.dataset.action;
+      if (action === 'left') {
+        shipX = Math.max(0, shipX - shipVelocityX);
+        ship.x = shipX;
+      }
+      if (action === 'right') {
+        shipX = Math.min(boardWidth - ship.width, shipX + shipVelocityX);
+        ship.x = shipX;
+      }
+      if (action === 'shoot') doShoot();
+    });
+  });
+};
 
 function update (){
   requestAnimationFrame(update);
@@ -97,11 +133,12 @@ for(let a=0;a<aliensArray.length;a++){
       alien.x += alienVelocityX*2;
       for(let j=0;j<aliensArray.length;j++){
         aliensArray[j].y +=alienHeight;
-        if(aliensArray[j].alive ===true && aliensArray[j].y === shipY){
+        if(aliensArray[j].alive === true && aliensArray[j].y === shipY){
           gameover = true;
-          context.style = "red";
-          context.font ="bold 48px courier";
-          context.fillText("Game Over",boardWidth/4,boardHeight/2);
+          context.fillStyle = "red";
+          context.font = "bold 48px courier";
+          context.fillText("Game Over", boardWidth/4, boardHeight/2);
+          restartBtn.style.display = "block";
         }
       }
      }
@@ -110,11 +147,51 @@ for(let a=0;a<aliensArray.length;a++){
     }
 }
 
+// Alien shooting
+if (Math.random() < 0.005 && aliensArray.length > 0) { // back to original frequency
+  let shootingAlien = aliensArray[Math.floor(Math.random() * aliensArray.length)];
+  if (shootingAlien && shootingAlien.alive) {
+    let alienBullet = {
+      x: shootingAlien.x + shootingAlien.width / 2 - tileSize / 32, // center
+      y: shootingAlien.y + shootingAlien.height,
+      width: tileSize / 4, // bolder
+      height: tileSize / 4,
+      used: false
+    };
+    alienBulletsArray.push(alienBullet);
+  }
+}
+
+// Draw alien bullets
+for(let i=0; i<alienBulletsArray.length; i++){
+  let bullet = alienBulletsArray[i];
+  bullet.y += alienBulletVelocityY;
+  context.fillStyle = "white";
+  context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+
+  // check collision with ship
+  if (!bullet.used && detectCollision(bullet, ship)) {
+    bullet.used = true;
+    gameover = true;
+    context.fillStyle = "red";
+    context.font = "bold 48px courier";
+    context.fillText("Game Over", boardWidth/4, boardHeight/2);
+    restartBtn.style.display = "block";
+    return;
+  }
+
+  // remove if off screen or used
+  if (bullet.y > boardHeight || bullet.used) {
+    alienBulletsArray.splice(i, 1);
+    i--;
+  }
+}
+
 //Draw the   bullets
 for(let i=0;i<bulletsArray.length;i++){
   let bullet = bulletsArray[i];
   bullet.y+=bulletVelocityY;
-context.fillStyle ="white";
+context.fillStyle ="green";
 context.fillRect(bullet.x,bullet.y,bullet.width,bullet.height);
 
   for(let j=0;j<aliensArray.length;j++){
@@ -135,6 +212,7 @@ context.fillRect(bullet.x,bullet.y,bullet.width,bullet.height);
       alienRows = Math.min(alienRows+1,rows-4);//maximum number o rows are 12
       aliensArray = [];
       bulletsArray = [];
+      alienBulletsArray = [];
       createAliens();
     }
 }
@@ -151,9 +229,11 @@ function moveShip(e){
   }
   if(e.code =="ArrowLeft" && shipX-shipVelocityX >=0){
       shipX -= shipVelocityX;
+      ship.x = shipX;
   }
   else if(e.code =="ArrowRight" && shipX +shipVelocityX +ship.width <=board.width){
     shipX += shipVelocityX;
+    ship.x = shipX;
   }
 }
 
@@ -184,9 +264,9 @@ function shoot (e){
   if(e.code=="Space"){
     //shoot
     let bullet ={
-      x:shipX+ shipWidth*15/32,
+      x: shipX + shipWidth / 2,
       y:shipY,
-      width:tileSize/8,
+      width: tileSize/4, // bolder
       height:tileSize/2,
       used: false
     }
@@ -198,6 +278,24 @@ function detectCollision(a,b){
          a.x+a.width>b.x&&
          a.y<b.y+b.height&&
          a.y+a.height>b.y
+}
+
+function resetGame() {
+  gameover = false;
+  score = 0;
+  shipX = tileSize*(columns/2)-tileSize;
+  ship.x = shipX;
+  aliensArray = [];
+  bulletsArray = [];
+  alienBulletsArray = [];
+  alienCount = 0;
+  alienColumns = 3;
+  alienRows = 2;
+  alienX = tileSize;
+  alienY = tileSize;
+  createAliens();
+  restartBtn.style.display = "none";
+  requestAnimationFrame(update);
 }
 
 
@@ -212,43 +310,15 @@ function resizeBoard() {
 }
 window.addEventListener('resize', resizeBoard);
 
-// in window.onload:
-window.onload = function () {
-  board = document.getElementById("board");
-  resizeBoard();                // keep on-screen responsive
-  board.width = boardWidth;
-  board.height = boardHeight;
-  context = board.getContext("2d");
-  // existing init...
-  requestAnimationFrame(update);
-  document.addEventListener("keydown", moveShip);
-  document.addEventListener("keyup", shoot);
+// no duplicate window.onload: already handled above with one initialization
 
-  // touch controls
-  document.querySelectorAll('.touch-btn').forEach(btn => {
-    btn.addEventListener('touchstart', e => {
-      e.preventDefault();
-      const action = btn.dataset.action;
-      if (action === 'left') shipX = Math.max(0, shipX - shipVelocityX);
-      if (action === 'right') shipX = Math.min(boardWidth - ship.width, shipX + shipVelocityX);
-      if (action === 'shoot') doShoot();
-    });
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      const action = btn.dataset.action;
-      if (action === 'left') shipX = Math.max(0, shipX - shipVelocityX);
-      if (action === 'right') shipX = Math.min(boardWidth - ship.width, shipX + shipVelocityX);
-      if (action === 'shoot') doShoot();
-    });
-  });
-};
 
 function doShoot() {
   if (gameover) return;
   let bullet = {
-    x: ship.x + ship.width / 2 - tileSize / 16,
-    y: ship.y,
-    width: tileSize / 8,
+    x: shipX + shipWidth / 2,
+    y: shipY,
+    width: tileSize / 4, // bolder
     height: tileSize / 2,
     used: false
   };

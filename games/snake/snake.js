@@ -4,13 +4,18 @@ const canva = document.getElementById('canva');
 const ctx = canva.getContext('2d');
 const score = document.querySelector("#score");
 const resetBtn = document.querySelector("#resetBtn")
-const canvaWidth = canva.clientWidth;
-const canvaHeight = canva.clientHeight;
+const scale = 20;
 const snakeColor = 'lightgreen';
 const foodColor = 'red';
-const scale = 20;
-const canvaRow = canvaWidth/scale;
-const canvaColumn = canvaHeight/scale;
+let maxWidth = Math.min((window.innerWidth || 400) * 0.9, 400);
+let canvaWidth = Math.floor(maxWidth / scale) * scale;
+let canvaHeight = canvaWidth; // square canvas
+canva.width = canvaWidth;
+canva.height = canvaHeight;
+canva.style.width = canvaWidth + 'px';
+canva.style.height = canvaHeight + 'px';
+const canvaRow = canvaWidth / scale;
+const canvaColumn = canvaHeight / scale;
 let gameOver = false;
 
 // css Styles
@@ -74,25 +79,38 @@ let snakeY = snake[0].y;
     x: snakeX,
     y: snakeY
   }
+
+  // check collision with body (tail self-eat)
+  const collided = snake.some((segment, index) => index > 0 && segment.x === newHead.x && segment.y === newHead.y);
+  if (collided) {
+    gameOver = true;
+    clearInterval(playGame);
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect(0, 0, canvaWidth, canvaHeight);
+    ctx.fillStyle = 'white';
+    ctx.font = '48px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over', canvaWidth / 2, canvaHeight / 2);
+    return;
+  }
+
   snake.pop();
   snake.unshift(newHead);
 
-
   if(snake[0].x === food.x && snake[0].y === food.y){
-score.innerHTML = parseInt(score.innerHTML) + 1;
-food.x = Math.floor(Math.random()*canvaRow)*scale;
-food.y = Math.floor(Math.random()*canvaColumn)*scale;
-  snake.unshift(newHead);
+    score.innerHTML = parseInt(score.innerHTML) + 1;
+    food.x = Math.floor(Math.random()*canvaRow)*scale;
+    food.y = Math.floor(Math.random()*canvaColumn)*scale;
+    snake.unshift(newHead);
   }
 }
 
 function changeDirection(event){
-  for(let i=0; i<snake.length; i++){
+  if (gameOver) return;
   if(event.key === 'ArrowDown' && d != 'up') d= 'down';
   if(event.key === 'ArrowUp'&& d != 'down') d= 'up';
   if(event.key === 'ArrowLeft' && d!='right') d= 'left';
   if(event.key === 'ArrowRight' && d!='left') d= 'right';
-}
 }
 
 
