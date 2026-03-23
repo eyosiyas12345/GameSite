@@ -94,6 +94,9 @@ ul li a.active{
     font-size: 0.9rem;
     margin: 0.8rem 0;
   }
+  .nav-links .nav-link.active{
+    color: #618631;
+  }
   .close-btn{
     position: absolute;
     top: 20px;
